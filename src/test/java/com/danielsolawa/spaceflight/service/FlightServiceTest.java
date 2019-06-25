@@ -75,10 +75,10 @@ public class FlightServiceTest {
 
         given(flightRepository.findAll()).willReturn(dummyFlights);
 
-        List<FlightDto> resultFlightDto = service.getAll();
+        List<FlightDto> resultFlightDtos = service.getAll();
 
-        assertThat(resultFlightDto, notNullValue());
-        assertThat(resultFlightDto.size(), equalTo(dummyFlights.size()));
+        assertThat(resultFlightDtos, notNullValue());
+        assertThat(resultFlightDtos.size(), equalTo(dummyFlights.size()));
 
         then(flightRepository).should().findAll();
 
