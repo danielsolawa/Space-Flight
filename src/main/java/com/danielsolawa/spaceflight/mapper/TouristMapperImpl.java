@@ -26,6 +26,7 @@ public class TouristMapperImpl implements TouristMapper {
     public Tourist MapFromDto(TouristDto touristDto) {
         Tourist tourist = new Tourist();
 
+        tourist.setId(touristDto.getId());
         tourist.setFirstName(touristDto.getFirstName());
         tourist.setLastName(touristDto.getLastName());
         tourist.setGender(touristDto.getGender());

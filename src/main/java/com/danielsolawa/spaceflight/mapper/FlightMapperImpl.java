@@ -9,11 +9,27 @@ public class FlightMapperImpl implements FlightMapper {
 
     @Override
     public FlightDto MapToDto(Flight flight) {
-        return null;
+
+        return FlightDto.builder()
+                        .id(flight.getId())
+                        .arrival(flight.getArrival())
+                        .departure(flight.getDeparture())
+                        .numberOfSeats(flight.getNumberOfSeats())
+                        .tourists(flight.getTourists())
+                        .price(flight.getPrice()).build();
     }
 
     @Override
     public Flight MapFromDto(FlightDto flightDto) {
-        return null;
+        Flight flight = new Flight();
+        flight.setId(flightDto.getId());
+        flight.setArrival(flightDto.getArrival());
+        flight.setDeparture(flightDto.getDeparture());
+        flight.setNumberOfSeats(flightDto.getNumberOfSeats());
+        flight.setTourists(flightDto.getTourists());
+        flight.setPrice(flightDto.getPrice());
+
+
+        return flight;
     }
 }

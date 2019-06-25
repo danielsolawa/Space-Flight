@@ -49,9 +49,9 @@ public class TouristMapperTest {
 
 
 
-        Tourist tourist = touristMapper.MapFromDto(dummyTouristDto);
+        Tourist dummyTourist = touristMapper.MapFromDto(dummyTouristDto);
 
-        assertThat(tourist, notNullValue());
+        assertThat(dummyTourist, notNullValue());
 
     }
 }
