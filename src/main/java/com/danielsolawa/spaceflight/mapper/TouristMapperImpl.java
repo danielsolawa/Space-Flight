@@ -9,11 +9,30 @@ public class TouristMapperImpl implements TouristMapper {
 
     @Override
     public TouristDto MapToDto(Tourist tourist) {
-        return null;
+
+        return TouristDto.builder()
+                .id(tourist.getId())
+                .firstName(tourist.getFirstName())
+                .lastName(tourist.getLastName())
+                .gender(tourist.getGender())
+                .country(tourist.getCountry())
+                .notes(tourist.getNotes())
+                .dateOfBirth(tourist.getDateOfBirth())
+                .flights(tourist.getFlights()).build();
+
     }
 
     @Override
     public Tourist MapFromDto(TouristDto touristDto) {
-        return null;
+        Tourist tourist = new Tourist();
+
+        tourist.setFirstName(touristDto.getFirstName());
+        tourist.setLastName(touristDto.getLastName());
+        tourist.setGender(touristDto.getGender());
+        tourist.setCountry(touristDto.getCountry());
+        tourist.setNotes(touristDto.getNotes());
+        tourist.setDateOfBirth(touristDto.getDateOfBirth());
+
+        return tourist;
     }
 }

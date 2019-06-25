@@ -1,6 +1,7 @@
 package com.danielsolawa.spaceflight.dto;
 
 import com.danielsolawa.spaceflight.domain.Tourist;
+import lombok.Builder;
 import lombok.Data;
 
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 public class FlightDto {
 
     private long id;

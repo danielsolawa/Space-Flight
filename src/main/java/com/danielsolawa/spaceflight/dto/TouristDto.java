@@ -2,6 +2,7 @@ package com.danielsolawa.spaceflight.dto;
 
 import com.danielsolawa.spaceflight.domain.Flight;
 import com.danielsolawa.spaceflight.domain.Gender;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Builder
 public class TouristDto {
 
     private long id;
