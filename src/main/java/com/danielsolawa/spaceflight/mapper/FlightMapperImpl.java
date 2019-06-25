@@ -21,15 +21,9 @@ public class FlightMapperImpl implements FlightMapper {
 
     @Override
     public Flight MapFromDto(FlightDto flightDto) {
-        Flight flight = new Flight();
-        flight.setId(flightDto.getId());
-        flight.setArrival(flightDto.getArrival());
-        flight.setDeparture(flightDto.getDeparture());
-        flight.setNumberOfSeats(flightDto.getNumberOfSeats());
-        flight.setTourists(flightDto.getTourists());
-        flight.setPrice(flightDto.getPrice());
 
-
-        return flight;
+        return new Flight(flightDto.getId(), flightDto.getArrival(),
+                flightDto.getDeparture(), flightDto.getNumberOfSeats(),
+                flightDto.getTourists(), flightDto.getPrice());
     }
 }

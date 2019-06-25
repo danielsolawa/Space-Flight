@@ -1,5 +1,6 @@
 package com.danielsolawa.spaceflight.mapper;
 
+import com.danielsolawa.spaceflight.command.CreateFlightCommand;
 import com.danielsolawa.spaceflight.domain.Flight;
 import com.danielsolawa.spaceflight.dto.FlightDto;
 import org.junit.Before;
@@ -22,7 +23,12 @@ public class FlightMapperTest {
 
     @Test
     public void mapToDto() {
-        Flight dummyFlight = new Flight();
+        Flight dummyFlight =
+                Flight.createFlight(CreateFlightCommand.builder()
+                                                        .arrival(LocalDateTime.now().plusDays(5).plusHours(6))
+                                                        .departure(LocalDateTime.now().plusDays(5).plusHours(2))
+                                                        .numberOfSeats(100)
+                                                        .price(new BigDecimal("199.99")).build());
         dummyFlight.setId(1L);
         dummyFlight.setArrival(LocalDateTime.now().plusDays(5).plusHours(6));
         dummyFlight.setDeparture(LocalDateTime.now().plusDays(5).plusHours(2));

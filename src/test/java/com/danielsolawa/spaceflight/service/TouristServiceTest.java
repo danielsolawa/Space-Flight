@@ -1,5 +1,7 @@
 package com.danielsolawa.spaceflight.service;
 
+import com.danielsolawa.spaceflight.command.CreateTouristCommand;
+import com.danielsolawa.spaceflight.command.UpdateTouristCommand;
 import com.danielsolawa.spaceflight.domain.Gender;
 import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.TouristDto;
@@ -45,7 +47,14 @@ public class TouristServiceTest {
     public void create() {
         TouristDto dummyTouristDto = getDummyTourist();
 
-        service.create(dummyTouristDto);
+        service.create(CreateTouristCommand.builder()
+                                            .firstName(dummyTouristDto.getFirstName())
+                                            .gender(dummyTouristDto.getGender())
+                                            .country(dummyTouristDto.getCountry())
+                                            .notes(dummyTouristDto.getNotes())
+                                            .lastName(dummyTouristDto.getLastName())
+                                            .dateOfBirth(dummyTouristDto.getDateOfBirth())
+                                            .build());
 
         then(touristRepository).should().save(ArgumentMatchers.any(Tourist.class));
     }
@@ -88,7 +97,7 @@ public class TouristServiceTest {
 
         given(touristRepository.getOne(anyLong())).willReturn(touristMapper.MapFromDto(dummyTourist));
 
-        service.update(dummyTourist, 2L);
+        service.update(UpdateTouristCommand.builder().build(), 2L);
 
         then(touristRepository).should().getOne(anyLong());
         then(touristRepository).should().save(any(Tourist.class));

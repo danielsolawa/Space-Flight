@@ -1,5 +1,7 @@
 package com.danielsolawa.spaceflight.service;
 
+import com.danielsolawa.spaceflight.command.CreateTouristCommand;
+import com.danielsolawa.spaceflight.command.UpdateTouristCommand;
 import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.TouristDto;
 import com.danielsolawa.spaceflight.mapper.TouristMapper;
@@ -22,8 +24,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public void create(TouristDto touristDto) {
-        Tourist tourist = touristMapper.MapFromDto(touristDto);
+    public void create(CreateTouristCommand command) {
+        Tourist tourist = Tourist.createTourist(command);
         touristRepository.save(tourist);
     }
 
@@ -46,8 +48,8 @@ public class TouristServiceImpl implements TouristService {
     }
 
     @Override
-    public void update(TouristDto touristDto, Long id) {
-        Tourist touristForUpdate = prepareForUpdate(touristDto, id);
+    public void update(UpdateTouristCommand command, Long id) {
+        Tourist touristForUpdate = prepareForUpdate(command, id);
 
         touristRepository.save(touristForUpdate);
     }
@@ -57,31 +59,31 @@ public class TouristServiceImpl implements TouristService {
          touristRepository.deleteById(id);
     }
 
-    private Tourist prepareForUpdate(TouristDto touristDto, Long id){
+    private Tourist prepareForUpdate(UpdateTouristCommand command, Long id){
         Tourist tourist = touristMapper.MapFromDto(getById(id));
 
-        if(touristDto.getFirstName() != null){
-            tourist.setFirstName(touristDto.getFirstName());
+        if(command.getFirstName() != null){
+            tourist.setFirstName(command.getFirstName());
         }
 
-        if(touristDto.getLastName() != null){
-            tourist.setLastName(touristDto.getLastName());
+        if(command.getLastName() != null){
+            tourist.setLastName(command.getLastName());
         }
 
-        if(touristDto.getGender() != null){
-            tourist.setGender(touristDto.getGender());
+        if(command.getGender() != null){
+            tourist.setGender(command.getGender());
         }
 
-        if(touristDto.getCountry() != null){
-            tourist.setCountry(touristDto.getCountry());
+        if(command.getCountry() != null){
+            tourist.setCountry(command.getCountry());
         }
 
-        if(touristDto.getNotes() != null){
-            tourist.setNotes(touristDto.getNotes());
+        if(command.getNotes() != null){
+            tourist.setNotes(command.getNotes());
         }
 
-        if(touristDto.getDateOfBirth() != null){
-            tourist.setDateOfBirth(touristDto.getDateOfBirth());
+        if(command.getDateOfBirth() != null){
+            tourist.setDateOfBirth(command.getDateOfBirth());
         }
 
         return tourist;

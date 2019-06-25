@@ -1,10 +1,16 @@
 package com.danielsolawa.spaceflight.service;
 
+import com.danielsolawa.spaceflight.command.CreateFlightCommand;
+import com.danielsolawa.spaceflight.command.CreateTouristCommand;
+import com.danielsolawa.spaceflight.command.UpdateFlightCommand;
 import com.danielsolawa.spaceflight.domain.Flight;
+import com.danielsolawa.spaceflight.domain.Gender;
+import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.FlightDto;
 import com.danielsolawa.spaceflight.mapper.FlightMapper;
 import com.danielsolawa.spaceflight.mapper.FlightMapperImpl;
 import com.danielsolawa.spaceflight.repository.FlightRepository;
+import com.danielsolawa.spaceflight.repository.TouristRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -12,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,29 +36,59 @@ public class FlightServiceTest {
     @Mock
     private FlightRepository flightRepository;
 
+    @Mock
+    private TouristRepository touristRepository;
+
     private FlightMapper flightMapper;
 
     private FlightService service;
+
+
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         flightMapper = new FlightMapperImpl();
-        service = new FlightServiceImpl(flightRepository, flightMapper);
+        service = new FlightServiceImpl(flightRepository, touristRepository, flightMapper);
     }
 
     @Test
     public void create() {
-        FlightDto dummyFlightDto = getDummyFlightDto();
-        service.create(dummyFlightDto);
+        CreateFlightCommand command =
+                CreateFlightCommand.builder()
+                                    .arrival(LocalDateTime.now())
+                                    .departure(LocalDateTime.now().minusHours(2))
+                                    .price(new BigDecimal("122.00"))
+                                    .numberOfSeats(100).build();
+
+
+        service.create(command);
 
         then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
 
     }
 
     @Test
+    public void addTouristToList(){
+        Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
+        dummyFlight.setTourists(new ArrayList<>());
+
+        given(touristRepository.getOne(anyLong()))
+                .willReturn(Tourist.empty());
+        given(flightRepository
+                .getOne(anyLong())).willReturn(dummyFlight);
+
+        service.addTouristToList(1L, 1L);
+
+        then(touristRepository).should().getOne(anyLong());
+        then(flightRepository).should().getOne(anyLong());
+        then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
+    }
+
+    @Test
     public void getById() {
         Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
+
 
         given(flightRepository.getOne(anyLong())).willReturn(dummyFlight);
 
@@ -89,9 +126,17 @@ public class FlightServiceTest {
     public void update() {
         FlightDto dummyFlight = getDummyFlightDto();
 
+
+        UpdateFlightCommand command =
+                UpdateFlightCommand.builder()
+                        .arrival(LocalDateTime.now())
+                        .departure(LocalDateTime.now().minusHours(2))
+                        .price(new BigDecimal("122.00"))
+                        .numberOfSeats(100).build();
+
         given(flightRepository.getOne(anyLong())).willReturn(flightMapper.MapFromDto(dummyFlight));
 
-        service.update(dummyFlight, 1L);
+        service.update(command, 1L);
 
         then(flightRepository).should().getOne(anyLong());
         then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));

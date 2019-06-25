@@ -24,16 +24,10 @@ public class TouristMapperImpl implements TouristMapper {
 
     @Override
     public Tourist MapFromDto(TouristDto touristDto) {
-        Tourist tourist = new Tourist();
 
-        tourist.setId(touristDto.getId());
-        tourist.setFirstName(touristDto.getFirstName());
-        tourist.setLastName(touristDto.getLastName());
-        tourist.setGender(touristDto.getGender());
-        tourist.setCountry(touristDto.getCountry());
-        tourist.setNotes(touristDto.getNotes());
-        tourist.setDateOfBirth(touristDto.getDateOfBirth());
-
-        return tourist;
+        return new Tourist(touristDto.getId(), touristDto.getFirstName(),
+                touristDto.getLastName(), touristDto.getGender(),
+                touristDto.getCountry(), touristDto.getNotes(),
+                touristDto.getDateOfBirth(), touristDto.getFlights());
     }
 }

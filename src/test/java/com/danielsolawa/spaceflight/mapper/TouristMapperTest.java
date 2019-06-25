@@ -1,5 +1,6 @@
 package com.danielsolawa.spaceflight.mapper;
 
+import com.danielsolawa.spaceflight.command.CreateTouristCommand;
 import com.danielsolawa.spaceflight.domain.Gender;
 import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.TouristDto;
@@ -23,19 +24,17 @@ public class TouristMapperTest {
 
     @Test
     public void mapToDto() {
-        Tourist dummyTourist = new Tourist();
-        dummyTourist.setId(1L);
-        dummyTourist.setFirstName("Thomas");
-        dummyTourist.setLastName("Smith");
-        dummyTourist.setGender(Gender.Male);
-        dummyTourist.setCountry("UK");
-        dummyTourist.setNotes("Empty");
-        dummyTourist.setDateOfBirth(LocalDate.of(1976, 10, 15));
+        Tourist dummyTourist = Tourist.createTourist(CreateTouristCommand.builder()
+                .firstName("Thomas")
+                .lastName("Smith")
+                .gender(Gender.Male)
+                .country("UK")
+                .notes("Empty")
+                .dateOfBirth(LocalDate.of(1976, 10, 15)).build());
 
         TouristDto dummyTouristDto = touristMapper.MapToDto(dummyTourist);
 
         assertThat(dummyTouristDto, notNullValue());
-        assertThat(dummyTouristDto.getId(), equalTo(dummyTourist.getId()));
         assertThat(dummyTouristDto.getFirstName(), equalTo(dummyTourist.getFirstName()));
         assertThat(dummyTouristDto.getLastName(), equalTo(dummyTourist.getLastName()));
 
