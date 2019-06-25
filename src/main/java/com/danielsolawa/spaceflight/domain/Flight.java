@@ -15,13 +15,13 @@ public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private LocalDateTime arrival;
 
     private LocalDateTime departure;
 
-    private int numberOfSeats;
+    private Integer numberOfSeats;
 
     @ManyToMany(mappedBy = "flights")
     private List<Tourist> tourists = new ArrayList<>();

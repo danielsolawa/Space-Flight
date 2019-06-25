@@ -14,10 +14,10 @@ import java.util.List;
 @Builder
 public class FlightDto {
 
-    private long id;
+    private Long id;
     private LocalDateTime arrival;
     private LocalDateTime departure;
-    private int numberOfSeats;
+    private Integer numberOfSeats;
     private List<Tourist> tourists = new ArrayList<>();
     private BigDecimal price;
 }

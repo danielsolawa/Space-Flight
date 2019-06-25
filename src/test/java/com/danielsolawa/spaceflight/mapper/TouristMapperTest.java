@@ -32,9 +32,13 @@ public class TouristMapperTest {
         dummyTourist.setNotes("Empty");
         dummyTourist.setDateOfBirth(LocalDate.of(1976, 10, 15));
 
-        TouristDto touristDto = touristMapper.MapToDto(dummyTourist);
+        TouristDto dummyTouristDto = touristMapper.MapToDto(dummyTourist);
 
-        assertThat(touristDto, notNullValue());
+        assertThat(dummyTouristDto, notNullValue());
+        assertThat(dummyTouristDto.getId(), equalTo(dummyTourist.getId()));
+        assertThat(dummyTouristDto.getFirstName(), equalTo(dummyTourist.getFirstName()));
+        assertThat(dummyTouristDto.getLastName(), equalTo(dummyTourist.getLastName()));
+
 }
 
     @Test
@@ -52,6 +56,9 @@ public class TouristMapperTest {
         Tourist dummyTourist = touristMapper.MapFromDto(dummyTouristDto);
 
         assertThat(dummyTourist, notNullValue());
+        assertThat(dummyTourist.getId(), equalTo(dummyTouristDto.getId()));
+        assertThat(dummyTourist.getFirstName(), equalTo(dummyTouristDto.getFirstName()));
+        assertThat(dummyTourist.getLastName(), equalTo(dummyTouristDto.getLastName()));
 
     }
 }

@@ -32,6 +32,9 @@ public class FlightMapperTest {
         FlightDto dummyFlightDto = flightMapper.MapToDto(dummyFlight);
 
         assertThat(dummyFlightDto, notNullValue());
+        assertThat(dummyFlightDto.getId(), equalTo(dummyFlight.getId()));
+        assertThat(dummyFlightDto.getArrival(), equalTo(dummyFlight.getArrival()));
+        assertThat(dummyFlightDto.getDeparture(), equalTo(dummyFlight.getDeparture()));
     }
 
     @Test
@@ -45,5 +48,8 @@ public class FlightMapperTest {
         Flight dummyFlight = flightMapper.MapFromDto(dummyFlightDto);
 
         assertThat(dummyFlight, notNullValue());
+        assertThat(dummyFlight.getId(), equalTo(dummyFlightDto.getId()));
+        assertThat(dummyFlight.getNumberOfSeats(), equalTo(dummyFlightDto.getNumberOfSeats()));
+        assertThat(dummyFlight.getPrice(), equalTo(dummyFlightDto.getPrice()));
     }
 }
