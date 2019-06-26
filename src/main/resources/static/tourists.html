@@ -2,7 +2,7 @@
     <div class="card-header">
         <h2>Tourist list</h2>
 
-        <button type="button" class="btn btn-outline-primary btn-lg">Add</button>
+        <button type="button" ui-sref="tourist-add()"class="btn btn-outline-primary btn-lg">Add</button>
 
     </div>
     <div class="card-body">
@@ -28,7 +28,7 @@
                 <td>{{tourist.gender}}</td>
                 <td>{{tourist.country}}</td>
                 <td>{{tourist.dateOfBirth}}</td>
-                <td><button type="button" ng-click="controller.editTourist(tourist.id)" class="btn btn-outline-warning">Edit</button></td>
+                <td><button type="button" ui-sref="tourist-update({id: tourist.id})" class="btn btn-outline-warning">Edit</button></td>
                 <td><button type="button" ng-click="controller.deleteTourist(tourist.id)" class="btn btn-outline-danger">Remove</button></td>
             </tr>
             </tbody>

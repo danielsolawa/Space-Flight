@@ -23,6 +23,46 @@ application.config(['$httpProvider', '$locationProvider', '$stateProvider', '$ur
                         controllerAs: 'controller'
                     }
                 }
+            })
+            .state('tourist-add', {
+                url: '/tourist-add',
+                views: {
+                    'main': {
+                        templateUrl: 'tourist-add.html',
+                        controller: 'touristAdd',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('tourist-update', {
+                url: '/tourist-update/{id}',
+                views: {
+                    'main': {
+                        templateUrl: 'tourist-update.html',
+                        controller: 'touristUpdate',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('flight-add', {
+                url: '/flight-add',
+                views: {
+                    'main': {
+                        templateUrl: 'flight-add.html',
+                        controller: 'flightAdd',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('flight-update', {
+                url: '/flight-update/{id}',
+                views: {
+                    'main': {
+                        templateUrl: 'flight-update.html',
+                        controller: 'flightUpdate',
+                        controllerAs: 'controller'
+                    }
+                }
             });
 
         $urlRouterProvider.otherwise('/');

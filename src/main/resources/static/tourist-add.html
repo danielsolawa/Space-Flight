@@ -1,0 +1,40 @@
+<div class="card card-margin-bottom">
+    <div class="card-header"><h2>Add New Tourist</h2></div>
+    <div class="card-body">
+        <div ng-show="controller.error" class="alert alert-danger">
+            {{controller.errorMessage}}
+        </div>
+        <form name="reg"ng-submit="controller.add()">
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input class="form-control"
+                       type="text" ng-model="controller.tourist.firstName" id="firstName" required/>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input class="form-control"
+                       type="text" ng-model="controller.tourist.lastName" id="lastName" required/>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <input class="form-control"
+                       type="text" ng-model="controller.tourist.gender" id="gender" required/>
+            </div>
+            <div class="form-group">
+                <label for="country">Country:</label>
+                <input class="form-control"
+                       type="text" ng-model="controller.tourist.country" id="country" required/>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes:</label>
+                <textarea class="form-control" type="text" ng-model="controller.tourist.notes" id="notes" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="dateOfBirth">Date Of Birth:</label>
+                <input class="form-control"
+                       type="text" ng-model="controller.tourist.dateOfBirth" id="dateOfBirth" required/>
+            </div>
+            <button type="submit" class="btn btn-primary" ng-disabled="reg.$invalid">Add</button>
+        </form>
+    </div>
+</div>

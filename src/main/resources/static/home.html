@@ -1,7 +1,7 @@
 <div class="card card-margin-bottom" data-ng-init="controller.loadData()">
     <div class="card-header">
         <h2>Flight list</h2>
-        <button type="button" class="btn btn-outline-primary btn-lg">Add</button>
+        <button type="button" ui-sref="flight-add()" class="btn btn-outline-primary btn-lg">Add</button>
     </div>
 
     <div class="card-body">
@@ -27,7 +27,7 @@
                         <td>{{flight.numberOfSeats}}</td>
                         <td>{{flight.numberOfSeats - flight.tourists.length}}</td>
                         <td>{{flight.price | currency:"$":2}}</td>
-                        <td><button type="button" ng-click="controller.editFlight(flight.id)" class="btn btn-outline-warning">Edit</button></td>
+                        <td><button type="button" ui-sref="flight-update({id: flight.id})" class="btn btn-outline-warning">Edit</button></td>
                         <td><button type="button" ng-click="controller.deleteFlight(flight.id)"class="btn btn-outline-danger">Remove</button></td>
                     </tr>
             </tbody>

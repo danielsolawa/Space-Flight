@@ -5,12 +5,15 @@ import com.danielsolawa.spaceflight.command.CreateFlightCommand;
 import com.danielsolawa.spaceflight.exception.AlreadyAddedException;
 import com.danielsolawa.spaceflight.exception.LimitExceededException;
 import com.danielsolawa.spaceflight.exception.NotFoundException;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,10 +28,11 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime arrival;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime departure;
-
     private Integer numberOfSeats;
 
     @ManyToMany
