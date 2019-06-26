@@ -76,9 +76,7 @@ public class Tourist {
         return t;
     }
 
-    public static Tourist empty(){
-        return new Tourist();
-    }
+
 
 
 

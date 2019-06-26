@@ -44,8 +44,9 @@ public class TouristServiceTest {
     }
 
     @Test
-    public void create() {
-        TouristDto dummyTouristDto = getDummyTourist();
+    public void createSuccessTest() {
+        TouristDto dummyTouristDto = getDummyTouristDto();
+
 
         service.create(CreateTouristCommand.builder()
                                             .firstName(dummyTouristDto.getFirstName())
@@ -56,13 +57,15 @@ public class TouristServiceTest {
                                             .dateOfBirth(dummyTouristDto.getDateOfBirth())
                                             .build());
 
+        // touristRepository.save method should be invoked.
         then(touristRepository).should().save(ArgumentMatchers.any(Tourist.class));
     }
 
     @Test
-    public void getById() {
-        Tourist dummyTourist = touristMapper.MapFromDto(getDummyTourist());
+    public void getByIdSuccessTest() {
+        Tourist dummyTourist = touristMapper.MapFromDto(getDummyTouristDto());
 
+        // touristRepository.getOne method should return a given object.
         given(touristRepository.getOne(anyLong())).willReturn(dummyTourist);
 
         TouristDto dummyTouristDto = service.getById(1L);
@@ -72,15 +75,17 @@ public class TouristServiceTest {
         assertThat(dummyTouristDto.getFirstName(), equalTo(dummyTourist.getFirstName()));
         assertThat(dummyTouristDto.getLastName(), equalTo(dummyTourist.getLastName()));
 
+        // touristRepository.getOne method should be invoked.
         then(touristRepository).should().getOne(anyLong());
     }
 
     @Test
-    public void getAll() {
-        List<Tourist> dummyTourists = getDummyList().stream()
+    public void getAllSuccessTest() {
+        List<Tourist> dummyTourists = getDummyTouristDtoList().stream()
                                                     .map(touristMapper::MapFromDto)
                                                     .collect(Collectors.toList());
 
+        // touristRepository.findAll method should return a given object.
         given(touristRepository.findAll()).willReturn(dummyTourists);
 
         List<TouristDto> resultTouristDtos = service.getAll();
@@ -88,30 +93,39 @@ public class TouristServiceTest {
         assertThat(resultTouristDtos, notNullValue());
         assertThat(resultTouristDtos.size(), equalTo(3));
 
+        // touristRepository.findAll method should be invoked.
         then(touristRepository).should().findAll();
     }
 
     @Test
-    public void update() {
-        TouristDto dummyTourist = getDummyTourist();
+    public void updateSuccessTest() {
+        TouristDto dummyTourist = getDummyTouristDto();
 
+        // touristRepository.getOne method should return a given object.
         given(touristRepository.getOne(anyLong())).willReturn(touristMapper.MapFromDto(dummyTourist));
 
         service.update(UpdateTouristCommand.builder().build(), 2L);
 
+        // touristRepository.getOne method should be invoked.
         then(touristRepository).should().getOne(anyLong());
+        // touristRepository.save method should be invoked.
         then(touristRepository).should().save(any(Tourist.class));
     }
 
     @Test
-    public void delete() {
+    public void deleteSuccessTest() {
 
         service.delete(2L);
 
+        // touristRepository.deleteById method should be invoked.
         then(touristRepository).should().deleteById(anyLong());
     }
 
-    private static TouristDto getDummyTourist(){
+    public static Tourist getDummyTourist(){
+        return new TouristMapperImpl().MapFromDto(getDummyTouristDto());
+    }
+
+    private static TouristDto getDummyTouristDto(){
         return TouristDto.builder()
                         .id(1L)
                         .firstName("Jane")
@@ -122,12 +136,12 @@ public class TouristServiceTest {
                         .dateOfBirth(LocalDate.of(1980, 5, 22)).build();
     }
 
-    private static List<TouristDto> getDummyList()
+    private static List<TouristDto> getDummyTouristDtoList()
     {
         List<TouristDto> list =  new ArrayList<>();
         for(int i = 0; i < 3; i++)
         {
-            list.add(getDummyTourist());
+            list.add(getDummyTouristDto());
         }
 
         return list;

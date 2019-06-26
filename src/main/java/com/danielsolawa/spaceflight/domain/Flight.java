@@ -65,9 +65,7 @@ public class Flight {
         return flight;
     }
 
-    public static Flight empty(){
-        return new Flight();
-    }
+
 
     public void addTourist(Tourist tourist){
         if(this.tourists.size() + 1 > this.numberOfSeats)

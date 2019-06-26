@@ -53,7 +53,7 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void create() {
+    public void createSuccessTest() {
         CreateFlightCommand command =
                 CreateFlightCommand.builder()
                                     .arrival(LocalDateTime.now())
@@ -64,32 +64,38 @@ public class FlightServiceTest {
 
         service.create(command);
 
+        // flightRepository.save should be invoked.
         then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
 
     }
 
     @Test
-    public void addTouristToList(){
+    public void addTouristToListSuccessTest(){
         Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
         dummyFlight.setTourists(new ArrayList<>());
 
+        // touristRepository.getOne should return a dummy tourist object;
         given(touristRepository.getOne(anyLong()))
-                .willReturn(Tourist.empty());
+                .willReturn(TouristServiceTest.getDummyTourist());
+        // flightRepository.getOne should return a dummy flight object;
         given(flightRepository
                 .getOne(anyLong())).willReturn(dummyFlight);
 
         service.addTouristToList(1L, 1L);
 
+        // touristRepository.getOne should be invoked.
         then(touristRepository).should().getOne(anyLong());
+        // flightRepository.getOne should be invoked.
         then(flightRepository).should().getOne(anyLong());
+        // flightRepository.save should be invoked.
         then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
     }
 
     @Test
-    public void getById() {
+    public void getByIdSuccessTest() {
         Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
 
-
+        // flightRepository.getOne should return a dummy flight object;
         given(flightRepository.getOne(anyLong())).willReturn(dummyFlight);
 
         FlightDto resultFlightDto = service.getById(1L);
@@ -100,16 +106,17 @@ public class FlightServiceTest {
         assertThat(resultFlightDto.getArrival(), equalTo(dummyFlight.getArrival()));
         assertThat(resultFlightDto.getPrice(), equalTo(dummyFlight.getPrice()));
 
-
+        // flightRepository.getOne should be invoked.
         then(flightRepository).should().getOne(anyLong());
     }
 
     @Test
-    public void getAll() {
+    public void getAllSuccessTest() {
         List<Flight> dummyFlights = getDummyListDto().stream()
                                                 .map(flightMapper::MapFromDto)
                                                 .collect(Collectors.toList());
 
+        // flightRepository.findAll should return a list of dummy flight objects;
         given(flightRepository.findAll()).willReturn(dummyFlights);
 
         List<FlightDto> resultFlightDtos = service.getAll();
@@ -117,13 +124,14 @@ public class FlightServiceTest {
         assertThat(resultFlightDtos, notNullValue());
         assertThat(resultFlightDtos.size(), equalTo(dummyFlights.size()));
 
+        // flightRepository.findAll should be invoked.
         then(flightRepository).should().findAll();
 
 
     }
 
     @Test
-    public void update() {
+    public void updateSuccessTest() {
         FlightDto dummyFlight = getDummyFlightDto();
 
 
@@ -134,18 +142,23 @@ public class FlightServiceTest {
                         .price(new BigDecimal("122.00"))
                         .numberOfSeats(100).build();
 
+        // flightRepository.getOne should return a dummy flight object;
         given(flightRepository.getOne(anyLong())).willReturn(flightMapper.MapFromDto(dummyFlight));
 
         service.update(command, 1L);
 
+        // flightRepository.getOne should be invoked.
         then(flightRepository).should().getOne(anyLong());
+        // flightRepository.save should be invoked.
         then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
     }
 
     @Test
-    public void delete() {
+    public void deleteSuccessTest() {
         service.delete(1L);
 
+
+        // flightRepository.save should be invoked.
         then(flightRepository).should().deleteById(anyLong());
     }
 
