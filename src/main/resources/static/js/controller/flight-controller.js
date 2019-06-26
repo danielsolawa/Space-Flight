@@ -13,6 +13,18 @@ application
             });
         }
 
+        self.editFlight = function () {
+            console.log("yoyo");
+        }
+
+        self.deleteFlight = function (id) {
+            flightService.delete({id: id}, function() {
+                self.loadData();
+            }, function(error) {
+                console.log("error");
+            })
+        }
+
 
 
     }]);

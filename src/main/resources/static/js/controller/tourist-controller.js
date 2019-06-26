@@ -12,6 +12,18 @@ application
             });
         }
 
+        self.editTourist = function () {
+            console.log("yoyo");
+        }
+
+        self.deleteTourist = function (id) {
+            touristService.delete({id: id}, function() {
+                self.loadData();
+            }, function(error) {
+                console.log("error");
+            })
+        }
+
 
 
     }]);

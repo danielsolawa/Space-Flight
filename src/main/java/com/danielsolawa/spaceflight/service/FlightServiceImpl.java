@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -116,6 +117,10 @@ public class FlightServiceImpl implements FlightService {
     public void delete(Long id) {
 
         log.info("Removing the flight with the given id.");
+        Flight flight = flightMapper.MapFromDto(getById(id));
+        List<Tourist> tList = new ArrayList<>(flight.getTourists());
+        tList.forEach(t -> flight.removeTourist(t));
+
 
         flightRepository.deleteById(id);
     }
