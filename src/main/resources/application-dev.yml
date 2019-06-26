@@ -1,5 +1,16 @@
-#Data Source configuration
+# Data Source configuration
 spring:
   h2:
     console:
       enabled: true
+  datasource:
+    url: jdbc:mysql://localhost:3300/spaceflight?createDatabaseIfNotExist=true
+    username: root
+    password: my-secret-pw
+    platform: mysql
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    database: mysql

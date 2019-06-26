@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString(exclude = {"flights"})
 @Entity
+@Table(name = "tour")
 public class Tourist {
 
     @Id

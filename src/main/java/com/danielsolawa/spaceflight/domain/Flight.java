@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @AllArgsConstructor
+@Table(name = "fli")
 public class Flight {
 
     @Id
@@ -30,8 +31,8 @@ public class Flight {
 
     @ManyToMany
     @JoinTable(name = "flight_tourist",
-            joinColumns = @JoinColumn(name = "flight_id"),
-            inverseJoinColumns = @JoinColumn(name= "tourist_id"))
+            joinColumns = @JoinColumn(name = "fli_id"),
+            inverseJoinColumns = @JoinColumn(name= "tour_id"))
     private List<Tourist> tourists = new ArrayList<>();
 
     private BigDecimal price;

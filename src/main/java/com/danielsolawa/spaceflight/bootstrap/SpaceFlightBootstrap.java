@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Component
 @Profile("dev")
@@ -38,21 +39,34 @@ public class SpaceFlightBootstrap implements CommandLineRunner {
     }
 
     private void loadFlights() {
-        Flight f1 = getDummyFlight(5);
-        flightRepository.save(f1);
+        List<Flight> list = flightRepository.findAll();
+        if(list.size() == 0)
+        {
+            Flight f1 = getDummyFlight(5);
+            flightRepository.save(f1);
+
+            Flight f2 = getDummyFlight(10);
+            flightRepository.save(f2);
+
+            log.info("New flights have been added.");
+        }
 
 
-
-
-        log.info("A new flight has been added.");
     }
 
     private void loadTourists() {
-        touristRepository.save(getDummyTourist("John", "Black",
-                                                Gender.Male, "USA",
-                                                "Empty", LocalDate.now()));
+        List<Tourist> list = touristRepository.findAll();
+        if(list.size() == 0) {
+            touristRepository.save(getDummyTourist("John", "Black",
+                    Gender.Male, "USA",
+                    "Empty", LocalDate.now()));
+            touristRepository.save(getDummyTourist("Erica", "Smith",
+                    Gender.Female, "UK",
+                    "Empty", LocalDate.now()));
+            log.info("New tourists have been added.");
+        }
 
-        log.info("A new tourist has been added.");
+
     }
 
     private static Flight getDummyFlight(int seats)
