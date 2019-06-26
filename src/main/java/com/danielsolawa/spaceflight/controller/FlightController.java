@@ -1,6 +1,8 @@
 package com.danielsolawa.spaceflight.controller;
 
 import com.danielsolawa.spaceflight.command.AddTouristCommand;
+import com.danielsolawa.spaceflight.command.CreateFlightCommand;
+import com.danielsolawa.spaceflight.command.UpdateFlightCommand;
 import com.danielsolawa.spaceflight.dto.FlightDto;
 import com.danielsolawa.spaceflight.dto.FlightListDto;
 import com.danielsolawa.spaceflight.service.FlightService;
@@ -37,8 +39,14 @@ public class FlightController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(){
+    public void create(@RequestBody CreateFlightCommand command){
+        flightService.create(command);
+    }
 
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void update(@PathVariable Long id, @RequestBody UpdateFlightCommand command){
+        flightService.update(command, id);
     }
 
     @PutMapping("/{id}/add-tourist")
@@ -47,5 +55,10 @@ public class FlightController {
         flightService.addTouristToList(id, command.getId());
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        flightService.delete(id);
+    }
 
 }

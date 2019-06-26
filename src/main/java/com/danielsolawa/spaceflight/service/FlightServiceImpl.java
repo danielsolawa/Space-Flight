@@ -73,7 +73,7 @@ public class FlightServiceImpl implements FlightService {
         return flightMapper.MapToDto(flight);
     }
 
-    // Returns a list of objects.
+    // Returns a list of all flight objects.
     @Override
     public List<FlightDto> getAll() {
         log.info("Returning the list of all flights.");
