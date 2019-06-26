@@ -177,9 +177,18 @@ public class FlightServiceTest {
 
     @Test
     public void deleteSuccessTest() {
+        Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
+        Optional<Flight> optionalFlight = Optional.of(dummyFlight);
+
+        // flightRepository.findById should return a dummy flight object;
+        given(flightRepository.findById(anyLong())).willReturn(optionalFlight);
+
+
         service.delete(1L);
 
 
+        // flightRepository.findById should be invoked.
+        then(flightRepository).should().findById(anyLong());
         // flightRepository.save should be invoked.
         then(flightRepository).should().deleteById(anyLong());
     }
@@ -190,7 +199,8 @@ public class FlightServiceTest {
                 .arrival(LocalDateTime.now().plusDays(5).plusHours(6))
                 .departure(LocalDateTime.now().plusDays(5).plusHours(2))
                 .numberOfSeats(100)
-                .price(new BigDecimal("99.59")).build();
+                .price(new BigDecimal("99.59"))
+                .tourists(new ArrayList<>()).build();
     }
 
     private static List<FlightDto> getDummyListDto() {

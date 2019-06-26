@@ -119,9 +119,16 @@ public class TouristServiceTest {
 
     @Test
     public void deleteSuccessTest() {
+        TouristDto dummyTourist = getDummyTouristDto();
+        Optional<Tourist> optionalTourist = Optional.of(touristMapper.MapFromDto(dummyTourist));
+
+        // touristRepository.findById method should return a given object.
+        given(touristRepository.findById(anyLong())).willReturn(optionalTourist);
 
         service.delete(2L);
 
+        // touristRepository.findById method should be invoked.
+        then(touristRepository).should().findById(anyLong());
         // touristRepository.deleteById method should be invoked.
         then(touristRepository).should().deleteById(anyLong());
     }
@@ -138,6 +145,7 @@ public class TouristServiceTest {
                         .gender(Gender.Female)
                         .country("France")
                         .notes("Empty")
+                        .flights(new ArrayList<>())
                         .dateOfBirth(LocalDate.of(1980, 5, 22)).build();
     }
 
