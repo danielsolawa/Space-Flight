@@ -38,14 +38,15 @@ public class SpaceFlightBootstrap implements CommandLineRunner {
         loadFlights();
     }
 
+    // Creates flight dummy data.
     private void loadFlights() {
         List<Flight> list = flightRepository.findAll();
         if(list.size() == 0)
         {
-            Flight f1 = getDummyFlight(5);
+            Flight f1 = getDummyFlight(5, new BigDecimal("19.99"));
             flightRepository.save(f1);
 
-            Flight f2 = getDummyFlight(10);
+            Flight f2 = getDummyFlight(10, new BigDecimal("59.99"));
             flightRepository.save(f2);
 
             log.info("New flights have been added.");
@@ -54,6 +55,7 @@ public class SpaceFlightBootstrap implements CommandLineRunner {
 
     }
 
+    // Creates tourist dummy data.
     private void loadTourists() {
         List<Tourist> list = touristRepository.findAll();
         if(list.size() == 0) {
@@ -69,16 +71,16 @@ public class SpaceFlightBootstrap implements CommandLineRunner {
 
     }
 
-    private static Flight getDummyFlight(int seats)
+    public static Flight getDummyFlight(int seats, BigDecimal price)
     {
         return Flight.createFlight(CreateFlightCommand.builder()
                                                     .arrival(LocalDateTime.now().plusDays(5).plusHours(6))
                                                     .departure(LocalDateTime.now().plusDays(5).plusHours(2))
                                                     .numberOfSeats(seats)
-                                                    .price(new BigDecimal("199.99")).build());
+                                                    .price(price).build());
     }
 
-    private static Tourist getDummyTourist(String firstName, String lastName,
+    public static Tourist getDummyTourist(String firstName, String lastName,
                                            Gender gender, String country,
                                            String notes, LocalDate dateOfBirth){
 

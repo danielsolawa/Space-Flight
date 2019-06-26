@@ -1,6 +1,6 @@
 package com.danielsolawa.spaceflight.service;
 
-import com.danielsolawa.spaceflight.command.CreateFlightCommand;
+import com.danielsolawa.spaceflight.bootstrap.SpaceFlightBootstrap;
 import com.danielsolawa.spaceflight.domain.Flight;
 import com.danielsolawa.spaceflight.repository.FlightRepository;
 import org.junit.Test;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FlightServiceTestIT {
+public class FlightServiceIT {
 
     @Autowired
     private FlightRepository flightRepository;
@@ -30,11 +29,7 @@ public class FlightServiceTestIT {
         removeAllFlights();
 
         //Creates a new flight object
-        Flight flight = Flight.createFlight(CreateFlightCommand.builder()
-                .arrival(LocalDateTime.now().plusDays(5).plusHours(6))
-                .departure(LocalDateTime.now().plusDays(5).plusHours(2))
-                .numberOfSeats(88)
-                .price(new BigDecimal("1929.99")).build());
+        Flight flight = SpaceFlightBootstrap.getDummyFlight(12, new BigDecimal("11.87"));
 
         flightRepository.save(flight);
 
