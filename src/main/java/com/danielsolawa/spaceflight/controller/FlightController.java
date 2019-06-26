@@ -55,6 +55,12 @@ public class FlightController {
         flightService.addTouristToList(id, command.getId());
     }
 
+    @PutMapping("/{id}/remove-tourist")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeTouristToList(@PathVariable Long id, @RequestBody AddTouristCommand command){
+        flightService.removeTouristFromTheList(id, command.getId());
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

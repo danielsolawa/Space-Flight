@@ -9,5 +9,6 @@ public interface FlightService extends BasicService<FlightDto> {
     void create(CreateFlightCommand command);
     void update(UpdateFlightCommand command, Long id);
     void addTouristToList(Long touristId, Long flightId);
+    void removeTouristFromTheList(Long touristId, Long flightId);
 
 }

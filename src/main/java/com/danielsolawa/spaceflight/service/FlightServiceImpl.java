@@ -46,11 +46,8 @@ public class FlightServiceImpl implements FlightService {
     // Assigns given tourist to the flight.
     @Transactional
     @Override
-    public void addTouristToList(Long touristId, Long flightId) {
-        Optional<Tourist> t = touristRepository.findById(touristId);
-        if(!t.isPresent()){
-            throw new NotFoundException("Tourist with the given doesn\'t exist.");
-        }
+    public void addTouristToList(Long flightId, Long touristId) {
+        Optional<Tourist> t = getTourist(touristId);
 
         Flight f = flightMapper.MapFromDto(getById(flightId));
         f.addTourist(t.get());
@@ -59,6 +56,23 @@ public class FlightServiceImpl implements FlightService {
 
         flightRepository.save(f);
     }
+
+    // Removes given tourist from the flight.
+    @Transactional
+    @Override
+    public void removeTouristFromTheList(Long flightId, Long touristId) {
+        Optional<Tourist> t = getTourist(touristId);
+
+        Flight f = flightMapper.MapFromDto(getById(flightId));
+        f.removeTourist(t.get());
+
+        log.info("Given tourist removed from the list.");
+
+        flightRepository.save(f);
+
+    }
+
+
 
     // Returns a Flight object if exists.
     @Override
@@ -132,6 +146,14 @@ public class FlightServiceImpl implements FlightService {
 
 
         return flight;
+    }
+
+    private Optional<Tourist> getTourist(Long touristId) {
+        Optional<Tourist> t = touristRepository.findById(touristId);
+        if (!t.isPresent()) {
+            throw new NotFoundException("Tourist with the given doesn\'t exist.");
+        }
+        return t;
     }
 
 

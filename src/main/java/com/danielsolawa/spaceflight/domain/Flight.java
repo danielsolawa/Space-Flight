@@ -4,6 +4,7 @@ package com.danielsolawa.spaceflight.domain;
 import com.danielsolawa.spaceflight.command.CreateFlightCommand;
 import com.danielsolawa.spaceflight.exception.AlreadyAddedException;
 import com.danielsolawa.spaceflight.exception.LimitExceededException;
+import com.danielsolawa.spaceflight.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Entity
@@ -80,7 +82,21 @@ public class Flight {
             throw new AlreadyAddedException("Given tourist has been already added.");
         }
 
+        tourist.addFlight(this);
         this.tourists.add(tourist);
+    }
+
+    public void removeTourist(Tourist tourist){
+        if(this.tourists.size() > 0){
+            Optional<Tourist> optionalTourist =
+                    this.tourists.stream().filter(t -> t.getId().equals(tourist.getId())).findAny();
+            if(!optionalTourist.isPresent()){
+                throw new NotFoundException("Tourist was not found.");
+            }
+            this.tourists.remove(optionalTourist.get());
+            tourist.removeFlight(this);
+
+        }
     }
 
 }

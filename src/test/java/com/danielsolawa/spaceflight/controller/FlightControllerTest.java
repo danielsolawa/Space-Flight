@@ -122,8 +122,25 @@ public class FlightControllerTest extends AbstractControllerTest{
                 .andExpect(status().isOk());
 
 
-        // flightService.update should be invoked.
+        // flightService.addTouristToList should be invoked.
         then(flightService).should().addTouristToList(anyLong(), anyLong());
+
+
+    }
+
+    @Test
+    public void removeTouristToListSuccessTest() throws Exception {
+        AddTouristCommand dummyTourist = AddTouristCommand.builder().id(1L).build();
+
+        mockMvc.perform(put(flightController.BASE_URL + "/1/remove-tourist")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJson(dummyTourist)))
+                .andExpect(status().isOk());
+
+
+        // flightService.removeTouristFromTheList should be invoked.
+        then(flightService).should().removeTouristFromTheList(anyLong(), anyLong());
 
 
     }

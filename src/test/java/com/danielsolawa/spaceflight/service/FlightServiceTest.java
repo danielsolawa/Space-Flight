@@ -1,11 +1,8 @@
 package com.danielsolawa.spaceflight.service;
 
 import com.danielsolawa.spaceflight.command.CreateFlightCommand;
-import com.danielsolawa.spaceflight.command.CreateTouristCommand;
 import com.danielsolawa.spaceflight.command.UpdateFlightCommand;
 import com.danielsolawa.spaceflight.domain.Flight;
-import com.danielsolawa.spaceflight.domain.Gender;
-import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.FlightDto;
 import com.danielsolawa.spaceflight.mapper.FlightMapper;
 import com.danielsolawa.spaceflight.mapper.FlightMapperImpl;
@@ -18,16 +15,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.Matchers.*;
-
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -84,6 +80,29 @@ public class FlightServiceTest {
                 .findById(anyLong())).willReturn(optionalFlight);
 
         service.addTouristToList(1L, 1L);
+
+        // touristRepository.findById should be invoked.
+        then(touristRepository).should().findById(anyLong());
+        // flightRepository.findById should be invoked.
+        then(flightRepository).should().findById(anyLong());
+        // flightRepository.save should be invoked.
+        then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
+    }
+
+    @Test
+    public void removeTouristToListSuccessTest(){
+        Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
+        Optional<Flight> optionalFlight = Optional.of(dummyFlight);
+        dummyFlight.setTourists(new ArrayList<>());
+
+        // touristRepository.findById should return a dummy tourist object;
+        given(touristRepository.findById(anyLong()))
+                .willReturn(Optional.of(TouristServiceTest.getDummyTourist()));
+        // flightRepository.findById should return a dummy flight object;
+        given(flightRepository
+                .findById(anyLong())).willReturn(optionalFlight);
+
+        service.removeTouristFromTheList(1L, 1L);
 
         // touristRepository.findById should be invoked.
         then(touristRepository).should().findById(anyLong());

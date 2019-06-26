@@ -12,7 +12,6 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-@ToString(exclude = {"flights"})
 @Entity
 @Table(name = "tour")
 public class Tourist {
@@ -75,6 +74,19 @@ public class Tourist {
         t.setNotes(command.getNotes());
 
         return t;
+    }
+
+    public void addFlight(Flight flight){
+        if(this.flights != null){
+            this.flights.add(flight);
+        }
+
+    }
+
+    public void removeFlight(Flight flight){
+        if(this.flights != null){
+            this.flights.remove(flight);
+        }
     }
 
 
