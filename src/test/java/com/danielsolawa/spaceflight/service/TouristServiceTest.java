@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -64,9 +65,10 @@ public class TouristServiceTest {
     @Test
     public void getByIdSuccessTest() {
         Tourist dummyTourist = touristMapper.MapFromDto(getDummyTouristDto());
+        Optional<Tourist> optionalTourist = Optional.of(dummyTourist);
 
-        // touristRepository.getOne method should return a given object.
-        given(touristRepository.getOne(anyLong())).willReturn(dummyTourist);
+        // touristRepository.findById method should return a given object.
+        given(touristRepository.findById(anyLong())).willReturn(optionalTourist);
 
         TouristDto dummyTouristDto = service.getById(1L);
 
@@ -75,9 +77,11 @@ public class TouristServiceTest {
         assertThat(dummyTouristDto.getFirstName(), equalTo(dummyTourist.getFirstName()));
         assertThat(dummyTouristDto.getLastName(), equalTo(dummyTourist.getLastName()));
 
-        // touristRepository.getOne method should be invoked.
-        then(touristRepository).should().getOne(anyLong());
+        // touristRepository.findById method should be invoked.
+        then(touristRepository).should().findById(anyLong());
     }
+
+
 
     @Test
     public void getAllSuccessTest() {
@@ -100,14 +104,15 @@ public class TouristServiceTest {
     @Test
     public void updateSuccessTest() {
         TouristDto dummyTourist = getDummyTouristDto();
+        Optional<Tourist> optionalTourist = Optional.of(touristMapper.MapFromDto(dummyTourist));
 
-        // touristRepository.getOne method should return a given object.
-        given(touristRepository.getOne(anyLong())).willReturn(touristMapper.MapFromDto(dummyTourist));
+        // touristRepository.findById method should return a given object.
+        given(touristRepository.findById(anyLong())).willReturn(optionalTourist);
 
         service.update(UpdateTouristCommand.builder().build(), 2L);
 
-        // touristRepository.getOne method should be invoked.
-        then(touristRepository).should().getOne(anyLong());
+        // touristRepository.findById method should be invoked.
+        then(touristRepository).should().findById(anyLong());
         // touristRepository.save method should be invoked.
         then(touristRepository).should().save(any(Tourist.class));
     }

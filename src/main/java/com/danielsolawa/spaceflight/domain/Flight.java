@@ -2,6 +2,8 @@ package com.danielsolawa.spaceflight.domain;
 
 
 import com.danielsolawa.spaceflight.command.CreateFlightCommand;
+import com.danielsolawa.spaceflight.exception.AlreadyAddedException;
+import com.danielsolawa.spaceflight.exception.LimitExceededException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -70,7 +72,11 @@ public class Flight {
     public void addTourist(Tourist tourist){
         if(this.tourists.size() + 1 > this.numberOfSeats)
         {
-            throw new RuntimeException("The number of seats has been exceeded.");
+            throw new LimitExceededException("The number of seats has been exceeded.");
+        }
+
+        if(tourists.stream().anyMatch(t -> t.equals(tourist))){
+            throw new AlreadyAddedException("Given tourist has been already added.");
         }
 
         this.tourists.add(tourist);

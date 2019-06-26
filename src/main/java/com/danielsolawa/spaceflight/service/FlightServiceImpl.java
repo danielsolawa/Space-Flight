@@ -5,6 +5,7 @@ import com.danielsolawa.spaceflight.command.UpdateFlightCommand;
 import com.danielsolawa.spaceflight.domain.Flight;
 import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.FlightDto;
+import com.danielsolawa.spaceflight.exception.NotFoundException;
 import com.danielsolawa.spaceflight.mapper.FlightMapper;
 import com.danielsolawa.spaceflight.repository.FlightRepository;
 import com.danielsolawa.spaceflight.repository.TouristRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,13 +47,13 @@ public class FlightServiceImpl implements FlightService {
     @Transactional
     @Override
     public void addTouristToList(Long touristId, Long flightId) {
-        Tourist t = touristRepository.getOne(touristId);
-        if(t == null){
-            throw new RuntimeException("Tourist with the given doesn\'t exist.");
+        Optional<Tourist> t = touristRepository.findById(touristId);
+        if(!t.isPresent()){
+            throw new NotFoundException("Tourist with the given doesn\'t exist.");
         }
 
         Flight f = flightMapper.MapFromDto(getById(flightId));
-        f.addTourist(t);
+        f.addTourist(t.get());
 
         log.info("Given tourist added to the list.");
 
@@ -61,16 +63,15 @@ public class FlightServiceImpl implements FlightService {
     // Returns a Flight object if exists.
     @Override
     public FlightDto getById(Long id){
-        Flight flight = flightRepository.getOne(id);
+        Optional<Flight> flight = flightRepository.findById(id);
 
-        if(flight == null){
-            //todo create a custom exception for not  found
-            throw new RuntimeException("Flight with given id was not found.");
+        if(!flight.isPresent()){
+            throw new NotFoundException("Flight with the given id was not found.");
         }
 
         log.info("Returning the flight.");
 
-        return flightMapper.MapToDto(flight);
+        return flightMapper.MapToDto(flight.get());
     }
 
     // Returns a list of all flight objects.

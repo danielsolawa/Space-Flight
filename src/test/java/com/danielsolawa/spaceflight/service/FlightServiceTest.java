@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
@@ -72,21 +73,22 @@ public class FlightServiceTest {
     @Test
     public void addTouristToListSuccessTest(){
         Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
+        Optional<Flight> optionalFlight = Optional.of(dummyFlight);
         dummyFlight.setTourists(new ArrayList<>());
 
-        // touristRepository.getOne should return a dummy tourist object;
-        given(touristRepository.getOne(anyLong()))
-                .willReturn(TouristServiceTest.getDummyTourist());
-        // flightRepository.getOne should return a dummy flight object;
+        // touristRepository.findById should return a dummy tourist object;
+        given(touristRepository.findById(anyLong()))
+                .willReturn(Optional.of(TouristServiceTest.getDummyTourist()));
+        // flightRepository.findById should return a dummy flight object;
         given(flightRepository
-                .getOne(anyLong())).willReturn(dummyFlight);
+                .findById(anyLong())).willReturn(optionalFlight);
 
         service.addTouristToList(1L, 1L);
 
-        // touristRepository.getOne should be invoked.
-        then(touristRepository).should().getOne(anyLong());
-        // flightRepository.getOne should be invoked.
-        then(flightRepository).should().getOne(anyLong());
+        // touristRepository.findById should be invoked.
+        then(touristRepository).should().findById(anyLong());
+        // flightRepository.findById should be invoked.
+        then(flightRepository).should().findById(anyLong());
         // flightRepository.save should be invoked.
         then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
     }
@@ -94,9 +96,10 @@ public class FlightServiceTest {
     @Test
     public void getByIdSuccessTest() {
         Flight dummyFlight = flightMapper.MapFromDto(getDummyFlightDto());
+        Optional<Flight> optionalFlight = Optional.of(dummyFlight);
 
-        // flightRepository.getOne should return a dummy flight object;
-        given(flightRepository.getOne(anyLong())).willReturn(dummyFlight);
+        // flightRepository.findById should return a dummy flight object;
+        given(flightRepository.findById(anyLong())).willReturn(optionalFlight);
 
         FlightDto resultFlightDto = service.getById(1L);
 
@@ -107,7 +110,7 @@ public class FlightServiceTest {
         assertThat(resultFlightDto.getPrice(), equalTo(dummyFlight.getPrice()));
 
         // flightRepository.getOne should be invoked.
-        then(flightRepository).should().getOne(anyLong());
+        then(flightRepository).should().findById(anyLong());
     }
 
     @Test
@@ -133,7 +136,7 @@ public class FlightServiceTest {
     @Test
     public void updateSuccessTest() {
         FlightDto dummyFlight = getDummyFlightDto();
-
+        Optional<Flight> optionalFlightDto =Optional.of(flightMapper.MapFromDto(dummyFlight));
 
         UpdateFlightCommand command =
                 UpdateFlightCommand.builder()
@@ -142,13 +145,13 @@ public class FlightServiceTest {
                         .price(new BigDecimal("122.00"))
                         .numberOfSeats(100).build();
 
-        // flightRepository.getOne should return a dummy flight object;
-        given(flightRepository.getOne(anyLong())).willReturn(flightMapper.MapFromDto(dummyFlight));
+        // flightRepository.findById should return a dummy flight object;
+        given(flightRepository.findById(anyLong())).willReturn(optionalFlightDto);
 
         service.update(command, 1L);
 
-        // flightRepository.getOne should be invoked.
-        then(flightRepository).should().getOne(anyLong());
+        // flightRepository.findById should be invoked.
+        then(flightRepository).should().findById(anyLong());
         // flightRepository.save should be invoked.
         then(flightRepository).should().save(ArgumentMatchers.any(Flight.class));
     }

@@ -3,6 +3,7 @@ package com.danielsolawa.spaceflight.controller;
 import com.danielsolawa.spaceflight.command.CreateTouristCommand;
 import com.danielsolawa.spaceflight.command.UpdateTouristCommand;
 import com.danielsolawa.spaceflight.dto.TouristDto;
+import com.danielsolawa.spaceflight.exception.NotFoundException;
 import com.danielsolawa.spaceflight.service.TouristService;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,19 +13,19 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.BDDMockito.given;
 
 public class TouristControllerTest extends AbstractControllerTest{
 
@@ -74,6 +75,7 @@ public class TouristControllerTest extends AbstractControllerTest{
         // touristService.getById should be invoked.
         then(touristService).should().getById(anyLong());
     }
+
 
     @Test
     public void createSuccessTest() throws Exception {

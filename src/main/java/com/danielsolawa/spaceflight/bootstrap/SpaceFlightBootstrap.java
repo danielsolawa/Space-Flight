@@ -38,7 +38,7 @@ public class SpaceFlightBootstrap implements CommandLineRunner {
     }
 
     private void loadFlights() {
-        Flight f1 = getDummyFlight();
+        Flight f1 = getDummyFlight(5);
         flightRepository.save(f1);
 
 
@@ -55,12 +55,12 @@ public class SpaceFlightBootstrap implements CommandLineRunner {
         log.info("A new tourist has been added.");
     }
 
-    private static Flight getDummyFlight()
+    private static Flight getDummyFlight(int seats)
     {
         return Flight.createFlight(CreateFlightCommand.builder()
                                                     .arrival(LocalDateTime.now().plusDays(5).plusHours(6))
                                                     .departure(LocalDateTime.now().plusDays(5).plusHours(2))
-                                                    .numberOfSeats(100)
+                                                    .numberOfSeats(seats)
                                                     .price(new BigDecimal("199.99")).build());
     }
 

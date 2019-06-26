@@ -4,11 +4,13 @@ import com.danielsolawa.spaceflight.command.CreateTouristCommand;
 import com.danielsolawa.spaceflight.command.UpdateTouristCommand;
 import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.TouristDto;
+import com.danielsolawa.spaceflight.exception.NotFoundException;
 import com.danielsolawa.spaceflight.mapper.TouristMapper;
 import com.danielsolawa.spaceflight.repository.TouristRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,12 +33,11 @@ public class TouristServiceImpl implements TouristService {
 
     @Override
     public TouristDto getById(Long id) {
-        Tourist tourist = touristRepository.getOne(id);
-        if(tourist == null){
-            //todo create a custom exception for not found
-            throw new RuntimeException("Tourist with the given id was not found.");
+        Optional<Tourist> tourist = touristRepository.findById(id);
+        if(!tourist.isPresent()){
+            throw new NotFoundException("Tourist with the given id was not found.");
         }
-        return touristMapper.MapToDto(tourist);
+        return touristMapper.MapToDto(tourist.get());
     }
 
     @Override
