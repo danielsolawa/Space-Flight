@@ -44,6 +44,26 @@ application.config(['$httpProvider', '$locationProvider', '$stateProvider', '$ur
                     }
                 }
             })
+            .state('tourist-details', {
+                url: '/tourist-details/{id}',
+                views: {
+                    'main': {
+                        templateUrl: 'tourist-details.html',
+                        controller: 'touristDetails',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('add-flight', {
+                url: '/tourist/{id}/add-flight',
+                views: {
+                    'main': {
+                        templateUrl: 'add-flight.html',
+                        controller: 'addFlight',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
             .state('flight-add', {
                 url: '/flight-add',
                 views: {
@@ -60,6 +80,26 @@ application.config(['$httpProvider', '$locationProvider', '$stateProvider', '$ur
                     'main': {
                         templateUrl: 'flight-update.html',
                         controller: 'flightUpdate',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('flight-details', {
+                url: '/flight-details/{id}',
+                views: {
+                    'main': {
+                        templateUrl: 'flight-details.html',
+                        controller: 'flightDetails',
+                        controllerAs: 'controller'
+                    }
+                }
+            })
+            .state('add-tourist', {
+                url: '/flight/{id}/add-tourist',
+                views: {
+                    'main': {
+                        templateUrl: 'add-tourist.html',
+                        controller: 'addTourist',
                         controllerAs: 'controller'
                     }
                 }

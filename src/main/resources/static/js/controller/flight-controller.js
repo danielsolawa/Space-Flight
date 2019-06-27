@@ -82,4 +82,107 @@ application
 
 
 
+        }])
+       .controller('flightDetails', ['flightService', 'removeTouristService', '$location', '$transition$',
+    function(flightService,removeTouristService,  $location, $transition$){
+        var self = this;
+        self.error = false;
+        self.errorMessage ="";
+        self.id = 0 ;
+        self.flight = {};
+
+
+        self.loadData = function(){
+            self.id = $transition$.params().id;
+
+            flightService.get({id: self.id}, function(response) {
+                self.flight = response;
+
+            }, function(error) {
+                console.log("error");
+            });
+        }
+
+        self.removeFromList = function(touristId){
+            console.log("removing tourist.");
+            removeTouristService.update({id: self.id}, touristId, function(){
+               self.loadData();
+            }, function(error){
+                console.log("error");
+            });
+        }
+
+
+    }])
+    .controller('addTourist', ['flightService', 'touristService', 'addTouristService', '$location', '$transition$',
+        function(flightService, touristService, addTouristService, $location, $transition$){
+            var self = this;
+            self.error = false;
+            self.errorMessage ="";
+            self.id = 0 ;
+            self.tourists = [];
+            self.flight = {};
+
+
+
+            self.loadData = function(){
+                self.id = $transition$.params().id;
+
+                flightService.get({id: self.id}, function(response) {
+                    self.flight = response;
+
+                    touristService.get( function(response) {
+                        self.tourists = response.tourists;
+                        filterTourists(self.flight.tourists, self.tourists);
+
+
+                    }, function(error) {
+                        console.log("error");
+                    });
+
+                }, function(error) {
+                    self.error = true;
+                    self.errorMessage = "Flight with the given id was not found.";
+                });
+
+
+
+
+
+
+
+            }
+
+            self.addTourist = function(touristId){
+
+                console.log("adding tourist.");
+                addTouristService.update({id: self.id}, touristId, function(){
+                    $location.path("/flight-details/" + self.flight.id);
+                }, function(error){
+                    console.log("error");
+                });
+
+            }
+
+            var filterTourists = function(flightTourists, tourists){
+                var set = new Set();
+
+                for(var i = 0; i < flightTourists.length; i++){
+                    set.add(flightTourists[i].id);
+                }
+
+                var list = [];
+
+                for(var i = 0; i < tourists.length; i++){
+                    if(!set.has(tourists[i].id)){
+                        list.push(tourists[i]);
+                    }
+                }
+
+
+                self.tourists = list;
+            }
+
+
+
         }]);

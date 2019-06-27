@@ -1,0 +1,53 @@
+<div class="card card-margin-bottom" data-ng-init="controller.loadData()">
+    <div class="card-header">
+        <h2>{{controller.tourist.firstName}} {{controller.tourist.lastName}}</h2>
+
+        <button type="button" ui-sref="tourist-update({id: controller.tourist.id})" class="btn btn-outline-warning">Edit Tourist</button>
+
+    </div>
+    <div class="card-body">
+
+        <div class="card" style="width: 100%;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h5>Gender:</h5> {{controller.tourist.gender}}</li>
+                <li class="list-group-item"><h5>Country:</h5> {{controller.tourist.country}}</li>
+                <li class="list-group-item"><h5>Notes:</h5> {{controller.tourist.notes}}</li>
+                <li class="list-group-item"><h5>Date Of Birth:</h5> {{controller.tourist.dateOfBirth | date:'yyyy-MM-dd'}}</li>
+
+            </ul>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="align-content-center">List Of Flights.</h3>
+                <button type="button" ui-sref="add-flight({id: controller.tourist.id})"class="btn btn-outline-primary btn-lg">Add Flight</button>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Departure</th>
+                        <th scope="col">Arrival</th>
+                        <th scope="col">Number Of Seats</th>
+                        <th scope="col">Price</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="flight in controller.tourist.flights">
+                    <tr>
+                        <td>{{flight.id}}</td>
+                        <td>{{flight.departure | date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{flight.arrival | date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{flight.numberOfSeats}}</td>
+                        <td>{{flight.price | currency:"$":2}}</td>
+                        <td><button type="button" ng-click="controller.removeFromList(flight.id)" class="btn btn-outline-danger">Remove From The List</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

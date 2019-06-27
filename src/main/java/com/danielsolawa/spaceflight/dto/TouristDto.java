@@ -2,7 +2,7 @@ package com.danielsolawa.spaceflight.dto;
 
 import com.danielsolawa.spaceflight.domain.Flight;
 import com.danielsolawa.spaceflight.domain.Gender;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +24,6 @@ public class TouristDto {
     private String country;
     private String notes;
     private LocalDate dateOfBirth;
-    @JsonIgnore
+    @JsonIgnoreProperties({ "tourists"})
     private List<Flight> flights;
 }

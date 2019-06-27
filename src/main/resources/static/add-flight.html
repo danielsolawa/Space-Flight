@@ -1,0 +1,38 @@
+<div class="card card-margin-bottom" data-ng-init="controller.loadData()">
+    <div class="card-header">
+        <h2>Add Flight to {{controller.tourist.firstName}} {{controller.tourist.lastName}}
+            </h2>
+    </div>
+    <div class="card-body">
+        <div ng-show="controller.error" class="alert alert-danger">
+            {{controller.errorMessage}}
+        </div>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Departure</th>
+                <th scope="col">Arrival</th>
+                <th scope="col">Number Of Seats</th>
+                <th scope="col">Available Seats</th>
+                <th scope="col">Price</th>
+                <th scope="col"></th>
+
+            </tr>
+            </thead>
+            <tbody ng-repeat="flight in controller.flights">
+            <tr>
+                <td>{{flight.id}}</td>
+                <td>{{flight.departure | date:'yyyy-MM-dd HH:mm'}}</td>
+                <td>{{flight.arrival | date:'yyyy-MM-dd HH:mm'}}</td>
+                <td>{{flight.numberOfSeats}}</td>
+                <td>{{flight.numberOfSeats - flight.tourists.length}}</td>
+                <td>{{flight.price | currency:"$":2}}</td>
+                <td><button type="button" ng-click="controller.addFlight(flight.id, flight.numberOfSeats - flight.tourists.length )"
+                            class="btn btn-outline-primary">Add Flight</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

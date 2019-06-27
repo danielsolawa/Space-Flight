@@ -1,12 +1,12 @@
 <div class="card card-margin-bottom" data-ng-init="controller.loadData()">
     <div class="card-header">
-        <h2>Tourist list</h2>
-
-        <button type="button" ui-sref="tourist-add()"class="btn btn-outline-primary btn-lg">Add</button>
-
+        <h2>Add Tourist to the Flight nr {{controller.flight.id}}
+            ({{controller.flight.numberOfSeats - controller.flight.tourists.length}} seats left)</h2>
     </div>
     <div class="card-body">
-
+        <div ng-show="controller.error" class="alert alert-danger">
+            {{controller.errorMessage}}
+        </div>
         <table class="table">
             <thead class="thead-dark">
             <tr>
@@ -17,8 +17,7 @@
                 <th scope="col">Country</th>
                 <th scope="col">Date Of Birth</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+
             </tr>
             </thead>
             <tbody ng-repeat="tourist in controller.tourists">
@@ -29,9 +28,7 @@
                 <td>{{tourist.gender}}</td>
                 <td>{{tourist.country}}</td>
                 <td>{{tourist.dateOfBirth}}</td>
-                <td><button type="button" ui-sref="tourist-details({id: tourist.id})" class="btn btn-outline-primary">Details</button></td>
-                <td><button type="button" ui-sref="tourist-update({id: tourist.id})" class="btn btn-outline-warning">Edit</button></td>
-                <td><button type="button" ng-click="controller.deleteTourist(tourist.id)" class="btn btn-outline-danger">Remove</button></td>
+                <td><button type="button" ng-click="controller.addTourist(tourist.id)" class="btn btn-outline-primary">Add Tourist to List</button></td>
             </tr>
             </tbody>
         </table>
