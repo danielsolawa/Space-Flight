@@ -52,51 +52,68 @@ application
 
 
 
-        var isValid =  function(){
-            if(!dateValidationFactory.DateTime(self.flight.departure))
-            {
-                //error
-                self.error = true;
-                self.errorMessage = "Invalid date time format in departure.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
-                return false;
+            var isValid =  function(){
+                if(!dateValidationFactory.DateTime(self.flight.departure))
+                {
+                    //error
+                    self.error = true;
+                    self.errorMessage = "Invalid date time format in 'Departure'.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                    return false;
+                }
+
+                if(!dateValidationFactory.DateTime(self.flight.arrival))
+                {
+                    //error
+                    self.error = true;
+                    self.errorMessage = "Invalid date time format in 'Arrival'.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                    return false;
+                }
+
+                var departure = new Date(self.flight.departure);
+                var arrival = new Date(self.flight.arrival);
+
+                if(departure >= arrival){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The 'Departure' cannot be later than the 'Arrival'";
+                    return false;
+                }
+
+
+
+                if(isNaN(self.flight.numberOfSeats)){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The 'Number Of Seats' must be a number.";
+                    return false;
+                }
+
+                if(self.flight.numberOfSeats < self.flight.tourists.length){
+                    //error
+                    self.error = true;
+                    self.errorMessage =
+                        "The 'Number Of Seats'cannot be less than the number of tourists (" +  self.flight.tourists.length + ").";
+                    return false;
+                }
+
+                if(self.flight.numberOfSeats < 1){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The 'Number Of Seats' cannot be less than 1.";
+                    return false;
+                }
+
+                if(self.flight.price < 1){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The 'Price' cannot be less than 1.00 $";
+                    return false;
+                }
+
+
+                return true;
+
             }
-
-            if(!dateValidationFactory.DateTime(self.flight.arrival))
-            {
-                //error
-                self.error = true;
-                self.errorMessage = "Invalid date time format in arrival.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
-                return false;
-            }
-
-            if(isNaN(self.flight.numberOfSeats)){
-                //error
-                self.error = true;
-                self.errorMessage = "The number of seats must be a number.";
-                return false;
-            }
-
-            if(self.flight.numberOfSeats < 1){
-                //error
-                self.error = true;
-                self.errorMessage = "The number of seats cannot be less than 1.";
-                return false;
-            }
-
-
-
-
-            if(self.flight.price < 1){
-                //error
-                self.error = true;
-                self.errorMessage = "The price cannot be less than 1.00 $";
-                return false;
-            }
-
-
-            return true;
-
-        }
 
     }])
     .controller('flightUpdate', ['flightService', 'dateValidationFactory', '$filter', '$location', '$transition$',
@@ -129,7 +146,7 @@ application
 
                     flightService.update({id: self.id}, self.flight, function(){
                         console.log("The flight has been updated successfully.");
-                        $location.path("/");
+                        $location.path("/flight-details/" + self.id);
                     }, function(error) {
                         console.log("An error has occurred.");
                         self.errorMessage = error.data.message;
@@ -146,7 +163,7 @@ application
                 {
                     //error
                     self.error = true;
-                    self.errorMessage = "Invalid date time format in departure.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                    self.errorMessage = "Invalid date time format in 'Departure'.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
                     return false;
                 }
 
@@ -154,28 +171,48 @@ application
                 {
                     //error
                     self.error = true;
-                    self.errorMessage = "Invalid date time format in arrival.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                    self.errorMessage = "Invalid date time format in 'Arrival'.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
                     return false;
                 }
+
+                var departure = new Date(self.flight.departure);
+                var arrival = new Date(self.flight.arrival);
+
+                if(departure >= arrival){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The 'Departure' cannot be later than the 'Arrival";
+                    return false;
+                }
+
+
 
                 if(isNaN(self.flight.numberOfSeats)){
                     //error
                     self.error = true;
-                    self.errorMessage = "The number of seats must be a number.";
+                    self.errorMessage = "The 'Number Of Seats' must be a number.";
+                    return false;
+                }
+
+                if(self.flight.numberOfSeats < self.flight.tourists.length){
+                    //error
+                    self.error = true;
+                    self.errorMessage =
+                        "The 'Number Of Seats'cannot be less than the number of tourists (" +  self.flight.tourists.length + ").";
                     return false;
                 }
 
                 if(self.flight.numberOfSeats < 1){
                     //error
                     self.error = true;
-                    self.errorMessage = "The number of seats cannot be less than 1.";
+                    self.errorMessage = "The 'Number Of Seats' cannot be less than 1.";
                     return false;
                 }
 
                 if(self.flight.price < 1){
                     //error
                     self.error = true;
-                    self.errorMessage = "The price cannot be less than 1.00 $";
+                    self.errorMessage = "The 'Price' cannot be less than 1.00 $";
                     return false;
                 }
 

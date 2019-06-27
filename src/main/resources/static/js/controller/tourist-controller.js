@@ -127,7 +127,7 @@ application
             if(isValid()){
                 touristService.update({id: self.id}, self.tourist, function(){
                     console.log("The tourist has been updated successfully.");
-                    $location.path("/tourist");
+                    $location.path("/tourist-details/" + self.id);
                 }, function(error) {
                     console.log("An error has occurred.");
                     self.errorMessage = error.data.message;
