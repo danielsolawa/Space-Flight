@@ -5,6 +5,7 @@ import com.danielsolawa.spaceflight.command.UpdateFlightCommand;
 import com.danielsolawa.spaceflight.domain.Flight;
 import com.danielsolawa.spaceflight.domain.Tourist;
 import com.danielsolawa.spaceflight.dto.FlightDto;
+import com.danielsolawa.spaceflight.exception.LimitExceededException;
 import com.danielsolawa.spaceflight.exception.NotFoundException;
 import com.danielsolawa.spaceflight.mapper.FlightMapper;
 import com.danielsolawa.spaceflight.repository.FlightRepository;
@@ -139,10 +140,12 @@ public class FlightServiceImpl implements FlightService {
             flight.setDeparture(command.getDeparture());
         }
 
-        if(command.getNumberOfSeats() > 0)
+        if(command.getNumberOfSeats() < flight.getTourists().size())
         {
-            flight.setNumberOfSeats(command.getNumberOfSeats());
+            throw new LimitExceededException("The number of seats cannot be less than the number of tourists.");
         }
+
+        flight.setNumberOfSeats(command.getNumberOfSeats());
 
         if(command.getPrice() != null)
         {
