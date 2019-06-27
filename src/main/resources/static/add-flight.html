@@ -11,11 +11,11 @@
             <thead class="thead-dark">
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Departure</th>
-                <th scope="col">Arrival</th>
-                <th scope="col">Number Of Seats</th>
+                <th scope="col"><i class="fas fa-plane-departure"></i> Departure</th>
+                <th scope="col"><i class="fas fa-plane-arrival"></i> Arrival</th>
+                <th scope="col"><i class="fas fa-chair"></i> Number Of Seats</th>
                 <th scope="col">Available Seats</th>
-                <th scope="col">Price</th>
+                <th scope="col"><i class="far fa-money-bill-alt"></i>  Price</th>
                 <th scope="col"></th>
 
             </tr>
@@ -26,7 +26,7 @@
                 <td>{{flight.departure | date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>{{flight.arrival | date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>{{flight.numberOfSeats}}</td>
-                <td>{{flight.numberOfSeats - flight.tourists.length}}</td>
+                <td ng-class="{'s':flight.numberOfSeats - flight.tourists.length > 0, 'w': flight.numberOfSeats - flight.tourists.length == 0}">{{flight.numberOfSeats - flight.tourists.length}}</td>
                 <td>{{flight.price | currency:"$":2}}</td>
                 <td><button type="button" ng-click="controller.addFlight(flight.id, flight.numberOfSeats - flight.tourists.length )"
                             class="btn btn-outline-primary">Add Flight</button></td>

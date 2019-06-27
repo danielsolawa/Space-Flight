@@ -1,6 +1,6 @@
 <div class="card card-margin-bottom" data-ng-init="controller.loadData()">
     <div class="card-header">
-        <h2>{{controller.tourist.firstName}} {{controller.tourist.lastName}}</h2>
+        <h2><i class="fas fa-hiking"></i> {{controller.tourist.firstName}} {{controller.tourist.lastName}}</h2>
 
         <button type="button" ui-sref="tourist-update({id: controller.tourist.id})" class="btn btn-outline-warning">Edit Tourist</button>
 
@@ -18,18 +18,21 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="align-content-center">List Of Flights.</h3>
+                <h3 class="align-content-center"><i class="fas fa-plane"></i> List Of Flights.</h3>
                 <button type="button" ui-sref="add-flight({id: controller.tourist.id})"class="btn btn-outline-primary btn-lg">Add Flight</button>
+            </div>
+            <div ng-show="controller.success" class="alert alert-success">
+                {{controller.message}}
             </div>
             <div class="card-body">
                 <table class="table table-hover">
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Departure</th>
-                        <th scope="col">Arrival</th>
-                        <th scope="col">Number Of Seats</th>
-                        <th scope="col">Price</th>
+                        <th scope="col"><i class="fas fa-plane-departure"></i> Departure</th>
+                        <th scope="col"><i class="fas fa-plane-arrival"></i> Arrival</th>
+                        <th scope="col"><i class="fas fa-chair"></i> Number Of Seats</th>
+                        <th scope="col"><i class="far fa-money-bill-alt"></i> Price</th>
                         <th></th>
                     </tr>
                     </thead>

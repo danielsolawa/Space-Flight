@@ -1,6 +1,6 @@
 <div class="card card-margin-bottom" data-ng-init="controller.loadData()">
     <div class="card-header">
-        <h2>Flight nr {{controller.flight.id}}</h2>
+        <h2><i class="fas fa-plane"></i> Flight nr {{controller.flight.id}}</h2>
 
         <button type="button" ui-sref="flight-update({id: controller.flight.id})" class="btn btn-outline-warning">Edit Flight</button>
 
@@ -9,17 +9,24 @@
 
         <div class="card" style="width: 100%;">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h5>Departure:</h5> {{controller.flight.departure| date:'yyyy-MM-dd HH:mm'}}</li>
-                <li class="list-group-item"><h5>Arrival:</h5>  {{controller.flight.arrival| date:'yyyy-MM-dd HH:mm'}}</li>
-                <li class="list-group-item"><h5>Number Of Seats:</h5>  {{controller.flight.numberOfSeats}}</li>
-                <li class="list-group-item"><h5>Number Of Free Seats:</h5>  {{controller.flight.numberOfSeats - controller.flight.tourists.length}}</li>
-                <li class="list-group-item"><h5>Price:</h5>  {{controller.flight.price | currency: "$":2}}</li>
+                <li class="list-group-item"><h5><i class="fas fa-plane-departure"></i> Departure:</h5> {{controller.flight.departure| date:'yyyy-MM-dd HH:mm'}}</li>
+                <li class="list-group-item"><h5><i class="fas fa-plane-arrival"></i> Arrival:</h5>  {{controller.flight.arrival| date:'yyyy-MM-dd HH:mm'}}</li>
+                <li class="list-group-item"><h5><i class="fas fa-chair"></i> Number Of Seats:</h5>  {{controller.flight.numberOfSeats}}</li>
+                <li class="list-group-item" ng-class="{'s': controller.flight.numberOfSeats - controller.flight.tourists.length > 0, 'w': controller.flight.numberOfSeats - controller.flight.tourists.length == 0}">
+                    <h5>Number Of Free Seats:</h5>  {{controller.flight.numberOfSeats - controller.flight.tourists.length}}</li>
+                <li class="list-group-item"><h5><i class="far fa-money-bill-alt"></i> Price:</h5>  {{controller.flight.price | currency: "$":2}}</li>
             </ul>
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="align-content-center">List Of tourists.</h3>
-                <button type="button" ui-sref="add-tourist({id: controller.flight.id})"class="btn btn-outline-primary btn-lg">Add Tourist</button>
+                <h3 class="align-content-center"><i class="fas fa-hiking"></i> List Of tourists.</h3>
+                <button type="button" ng-click="controller.addToList(controller.flight.numberOfSeats - controller.flight.tourists.length)" class="btn btn-outline-primary btn-lg">Add Tourist</button>
+            </div>
+            <div ng-show="controller.success" class="alert alert-success">
+                {{controller.message}}
+            </div>
+            <div ng-show="controller.error" class="alert alert-danger">
+                {{controller.errorMessage}}
             </div>
             <div class="card-body">
                 <table class="table table-hover">

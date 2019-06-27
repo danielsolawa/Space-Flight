@@ -103,10 +103,24 @@ application
             });
         }
 
+        self.addToList = function(seatsAvailable){
+            console.log("here!");
+            if(seatsAvailable === 0){
+                console.log("here!");
+                self.error = true;
+                self.errorMessage = "There are no available seats in this flight. Please choose another one.";
+                return;
+            }
+
+            $location.path("/flight/" + self.id + "/add-tourist");
+        }
+
         self.removeFromList = function(touristId){
-            console.log("removing tourist.");
+
             removeTouristService.update({id: self.id}, touristId, function(){
                self.loadData();
+               self.success = true;
+               self.message = "The tourist has been removed successfully!";
             }, function(error){
                 console.log("error");
             });

@@ -105,9 +105,11 @@ application
             }
 
             self.removeFromList = function(flightId){
-                console.log("removing flight.");
+
                 removeTouristService.update({id: flightId}, self.id, function(){
                     self.loadData();
+                    self.success = true;
+                    self.message = "The flight has been removed successfully!";
                 }, function(error){
                     console.log("error");
                 });
