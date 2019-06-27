@@ -27,35 +27,88 @@ application
 
 
     }])
-    .controller('touristAdd', ['touristService', '$location', function(touristService, $location){
+    .controller('touristAdd', ['touristService', 'dateValidationFactory', '$location',
+        function(touristService, dateValidationFactory, $location){
         var self = this;
         self.error = false;
         self.tourist= {};
         self.errorMessage ="";
 
+        self.genders = ["Male", "Female"];
+
         self.add = function() {
             self.error = false;
 
-            touristService.save(self.tourist, function(){
-                console.log("The tourist has been added successfully.");
-                $location.path("/tourist");
-            }, function(error) {
-                console.log("An error has occurred.");
-                self.errorMessage = error.data.message;
-                self.error=true;
-            });
+            if(isValid()){
+                touristService.save(self.tourist, function(){
+                    console.log("The tourist has been added successfully.");
+                    $location.path("/tourist");
+                }, function(error) {
+                    console.log("An error has occurred.");
+                    self.errorMessage = error.data.message;
+                    self.error=true;
+                });
+            }
+
+        }
+
+
+        var isValid = function(){
+            if(self.tourist.firstName.length < 2 || self.tourist.firstName.length > 15){
+                self.error = true;
+                self.errorMessage ="'First Name' must contain between 2 and 15 characters.";
+
+                return false;
+            }
+
+            if(self.tourist.lastName.length < 2 || self.tourist.lastName.length > 15){
+                self.error = true;
+                self.errorMessage ="'Last Name' must contain between 2 and 15 characters.";
+
+                return false;
+            }
+
+
+            if(self.tourist.country.length < 2 || self.tourist.country.length > 20){
+                self.error = true;
+                self.errorMessage ="'Country' must contain between 2 and 20 characters.";
+
+                return false;
+            }
+
+            if(self.tourist.notes){
+                if(self.tourist.notes.length > 20){
+                    self.error = true;
+                    self.errorMessage ="'Notes' can contain up to 30 characters.";
+
+                    return false;
+                }
+            }
+
+            if(!dateValidationFactory.Date(self.tourist.dateOfBirth)){
+                self.error = true;
+                self.errorMessage ="Invalid date format in 'Date Of Birth'.\nPlease try 'yyyy-MM-dd' eg. '2019-07-02'";
+
+                return false;
+            }
+
+
+
+            return true;
         }
 
 
 
 
     }])
-    .controller('touristUpdate', ['touristService', '$location', '$transition$',
-        function(touristService, $location, $transition$){
+    .controller('touristUpdate', ['touristService', 'dateValidationFactory', '$location', '$transition$',
+        function(touristService, dateValidationFactory, $location, $transition$){
         var self = this;
         self.error = false;
         self.errorMessage ="";
         self.id = 0 ;
+
+        self.genders = ["Male", "Female"];
 
 
         self.loadData = function(){
@@ -71,15 +124,62 @@ application
 
         self.update = function() {
             self.error = false;
+            if(isValid()){
+                touristService.update({id: self.id}, self.tourist, function(){
+                    console.log("The tourist has been updated successfully.");
+                    $location.path("/tourist");
+                }, function(error) {
+                    console.log("An error has occurred.");
+                    self.errorMessage = error.data.message;
+                    self.error=true;
+                });
+            }
 
-            touristService.update({id: self.id}, self.tourist, function(){
-                console.log("The tourist has been updated successfully.");
-                $location.path("/tourist");
-            }, function(error) {
-                console.log("An error has occurred.");
-                self.errorMessage = error.data.message;
-                self.error=true;
-            });
+
+        }
+
+        var isValid = function(){
+            if(self.tourist.firstName.length < 2 || self.tourist.firstName.length > 15){
+                self.error = true;
+                self.errorMessage ="'First Name' must contain between 2 and 15 characters.";
+
+                return false;
+            }
+
+            if(self.tourist.lastName.length < 2 || self.tourist.lastName.length > 15){
+                self.error = true;
+                self.errorMessage ="'Last Name' must contain between 2 and 15 characters.";
+
+                return false;
+            }
+
+
+            if(self.tourist.country.length < 2 || self.tourist.country.length > 20){
+                self.error = true;
+                self.errorMessage ="'Country' must contain between 2 and 20 characters.";
+
+                return false;
+            }
+
+            if(self.tourist.notes){
+                if(self.tourist.notes.length > 20){
+                    self.error = true;
+                    self.errorMessage ="'Notes' can contain up to 30 characters.";
+
+                    return false;
+                }
+            }
+
+            if(!dateValidationFactory.Date(self.tourist.dateOfBirth)){
+                self.error = true;
+                self.errorMessage ="Invalid date format in 'Date Of Birth'.\nPlease try 'yyyy-MM-dd' eg. '2019-07-02'";
+
+                return false;
+            }
+
+
+
+            return true;
         }
 
 

@@ -17,8 +17,12 @@
             </div>
             <div class="form-group">
                 <label for="gender">Gender:</label>
-                <input class="form-control"
-                       type="text" ng-model="controller.tourist.gender" id="gender" required/>
+                <select ng-init="controller.tourist.gender = controller.genders[1]"
+                        ng-model="controller.tourist.gender" id="gender"
+                        ng-options="option for option in controller.genders"
+                        class="form-control">
+
+                </select>
             </div>
             <div class="form-group">
                 <label for="country">Country:</label>
@@ -27,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label for="notes">Notes:</label>
-                <textarea class="form-control" type="text" ng-model="controller.tourist.notes" id="notes" required></textarea>
+                <textarea class="form-control" type="text" ng-model="controller.tourist.notes" id="notes" ></textarea>
             </div>
             <div class="form-group">
                 <label for="dateOfBirth">Date Of Birth:</label>

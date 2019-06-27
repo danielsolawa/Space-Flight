@@ -57,9 +57,9 @@ public class Tourist {
             throw new RuntimeException("Country  cannot be empty.");
         }
 
-        if(command.getNotes() == null){
-            throw new RuntimeException("Notes cannot be empty.");
-        }
+//        if(command.getNotes() == null){
+//            throw new RuntimeException("Notes cannot be empty.");
+//        }
 
         if(command.getDateOfBirth() == null){
             throw new RuntimeException("Date of birth cannot be empty.");
