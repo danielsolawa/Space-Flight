@@ -1,27 +1,27 @@
 <div class="card card-margin-bottom">
-    <div class="card-header"><h2>Add New Tourist</h2></div>
+    <div class="card-header"><h2>Add New Flight</h2></div>
     <div class="card-body">
         <div ng-show="controller.error" class="alert alert-danger">
             {{controller.errorMessage}}
         </div>
         <form name="reg"ng-submit="controller.add()">
             <div class="form-group">
-                <label for="departure">Departure:</label>
+                <label for="departure"><i class="fas fa-plane-departure"></i> Departure (yyyy-MM-dd HH:mm):</label>
                 <input class="form-control"
-                       type="text" ng-model="controller.flight.departure" id="departure" required/>
+                       type="text"  ng-model="controller.flight.departure"  id="departure" required/>
             </div>
             <div class="form-group">
-                <label for="departure">Arrival:</label>
+                <label for="departure"><i class="fas fa-plane-arrival"></i> Arrival (yyyy-MM-dd HH:mm):</label>
                 <input class="form-control"
-                       type="text" ng-model="controller.flight.arrival" id="arrival" required/>
+                       type="text"  ng-model="controller.flight.arrival" id="arrival" required/>
             </div>
             <div class="form-group">
-                <label for="numberOfSeats">Number Of Seats:</label>
+                <label for="numberOfSeats"><i class="fas fa-chair"></i>  Number Of Seats:</label>
                 <input class="form-control"
-                       type="text" ng-model="controller.flight.numberOfSeats" id="numberOfSeats" required/>
+                       type="number" ng-model="controller.flight.numberOfSeats" id="numberOfSeats" required/>
             </div>
             <div class="form-group">
-                <label for="price">Price:</label>
+                <label for="price"><i class="far fa-money-bill-alt"></i> Price:</label>
                 <input class="form-control"
                        type="number" step="0.01" ng-model="controller.flight.price" id="price" required/>
             </div>

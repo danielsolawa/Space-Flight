@@ -14,7 +14,7 @@ application
         }
 
         self.editFlight = function () {
-            console.log("yoyo");
+
         }
 
         self.deleteFlight = function (id) {
@@ -28,7 +28,8 @@ application
 
 
     }])
-    .controller('flightAdd', ['flightService', '$location', function (flightService, $location) {
+    .controller('flightAdd', ['flightService', 'dateValidationFactory', '$location',
+        function (flightService, dateValidationFactory, $location) {
         var self = this;
         self.error = false;
         self.flight= {};
@@ -36,19 +37,70 @@ application
 
         self.add = function() {
             self.error = false;
+            if(isValid()){
+                flightService.save(self.flight, function(){
+                    console.log("The flight has been added successfully.");
+                    $location.path("/");
+                }, function(error) {
+                    console.log("An error has occurred.");
+                    self.errorMessage = error.data.message;
+                    self.error=true;
+                });
+            }
 
-            flightService.save(self.flight, function(){
-                console.log("The flight has been added successfully.");
-                $location.path("/");
-            }, function(error) {
-                console.log("An error has occurred.");
-                self.errorMessage = error.data.message;
-                self.error=true;
-            });
         }
+
+
+
+        var isValid =  function(){
+            if(!dateValidationFactory.DateTime(self.flight.departure))
+            {
+                //error
+                self.error = true;
+                self.errorMessage = "Invalid date time format in departure.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                return false;
+            }
+
+            if(!dateValidationFactory.DateTime(self.flight.arrival))
+            {
+                //error
+                self.error = true;
+                self.errorMessage = "Invalid date time format in arrival.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                return false;
+            }
+
+            if(isNaN(self.flight.numberOfSeats)){
+                //error
+                self.error = true;
+                self.errorMessage = "The number of seats must be a number.";
+                return false;
+            }
+
+            if(self.flight.numberOfSeats < 1){
+                //error
+                self.error = true;
+                self.errorMessage = "The number of seats cannot be less than 1.";
+                return false;
+            }
+
+
+
+
+            if(self.flight.price < 1){
+                //error
+                self.error = true;
+                self.errorMessage = "The price cannot be less than 1.00 $";
+                return false;
+            }
+
+
+            return true;
+
+        }
+
     }])
-    .controller('flightUpdate', ['flightService', '$location', '$transition$',
-        function(flightService, $location, $transition$){
+    .controller('flightUpdate', ['flightService', 'dateValidationFactory', '$filter', '$location', '$transition$',
+        function(flightService, dateValidationFactory, $filter, $location, $transition$){
             var self = this;
             self.error = false;
             self.errorMessage ="";
@@ -58,7 +110,11 @@ application
             self.loadData = function(){
                 self.id = $transition$.params().id;
 
+
                 flightService.get({id: self.id}, function(response) {
+
+                    response.departure = $filter('date')(response.departure,'yyyy-MM-dd HH:mm');
+                    response.arrival = $filter('date')(response.arrival,'yyyy-MM-dd HH:mm');
                     self.flight = response;
 
                 }, function(error) {
@@ -69,15 +125,65 @@ application
             self.update = function() {
                 self.error = false;
 
-                flightService.update({id: self.id}, self.flight, function(){
-                    console.log("The flight has been updated successfully.");
-                    $location.path("/");
-                }, function(error) {
-                    console.log("An error has occurred.");
-                    self.errorMessage = error.data.message;
-                    self.error=true;
-                });
+                if(isValid()){
+
+                    flightService.update({id: self.id}, self.flight, function(){
+                        console.log("The flight has been updated successfully.");
+                        $location.path("/");
+                    }, function(error) {
+                        console.log("An error has occurred.");
+                        self.errorMessage = error.data.message;
+                        self.error=true;
+                    });
+                }
+
+
             }
+
+
+            var isValid =  function(){
+                if(!dateValidationFactory.DateTime(self.flight.departure))
+                {
+                    //error
+                    self.error = true;
+                    self.errorMessage = "Invalid date time format in departure.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                    return false;
+                }
+
+                if(!dateValidationFactory.DateTime(self.flight.arrival))
+                {
+                    //error
+                    self.error = true;
+                    self.errorMessage = "Invalid date time format in arrival.\nPlease try 'yyyy-MM-dd HH:mm' eg. '2019-07-02 17:04'";
+                    return false;
+                }
+
+                if(isNaN(self.flight.numberOfSeats)){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The number of seats must be a number.";
+                    return false;
+                }
+
+                if(self.flight.numberOfSeats < 1){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The number of seats cannot be less than 1.";
+                    return false;
+                }
+
+                if(self.flight.price < 1){
+                    //error
+                    self.error = true;
+                    self.errorMessage = "The price cannot be less than 1.00 $";
+                    return false;
+                }
+
+
+                return true;
+
+            }
+
 
 
 
@@ -104,9 +210,9 @@ application
         }
 
         self.addToList = function(seatsAvailable){
-            console.log("here!");
+
             if(seatsAvailable === 0){
-                console.log("here!");
+
                 self.error = true;
                 self.errorMessage = "There are no available seats in this flight. Please choose another one.";
                 return;

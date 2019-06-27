@@ -56,7 +56,7 @@ public class Flight {
             throw new RuntimeException("The departure must be set.");
         }
 
-        if(command.getNumberOfSeats() == 0){
+        if(command.getNumberOfSeats() < 1){
             throw new RuntimeException("The number of seats must be greater than 0.");
         }
 

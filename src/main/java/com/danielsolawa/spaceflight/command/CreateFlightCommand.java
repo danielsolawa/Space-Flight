@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Builder
 public class CreateFlightCommand {
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-M-d H:m")
     private LocalDateTime arrival;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-M-d H:m")
     private LocalDateTime departure;
     private Integer numberOfSeats;
     private BigDecimal price;

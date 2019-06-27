@@ -13,7 +13,7 @@ application
         }
 
         self.editTourist = function () {
-            console.log("yoyo");
+
         }
 
         self.deleteTourist = function (id) {

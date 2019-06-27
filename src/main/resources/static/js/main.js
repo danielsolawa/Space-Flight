@@ -1,4 +1,4 @@
-var application = angular.module('space-flight', ['ngResource', 'ui.router']);
+var application = angular.module('space-flight', ['ngResource', 'ui.router', 'datetime']);
 
 application.config(['$httpProvider', '$locationProvider', '$stateProvider', '$urlRouterProvider',
     function ($httpProvider, $locationProvider, $stateProvider, $urlRouterProvider) {

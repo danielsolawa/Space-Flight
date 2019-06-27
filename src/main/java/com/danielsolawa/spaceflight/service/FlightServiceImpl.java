@@ -139,7 +139,7 @@ public class FlightServiceImpl implements FlightService {
             flight.setDeparture(command.getDeparture());
         }
 
-        if(command.getNumberOfSeats() != 0)
+        if(command.getNumberOfSeats() > 0)
         {
             flight.setNumberOfSeats(command.getNumberOfSeats());
         }
