@@ -13,9 +13,6 @@ application
             });
         }
 
-        self.editFlight = function () {
-
-        }
 
         self.deleteFlight = function (id) {
             flightService.delete({id: id}, function() {
@@ -88,13 +85,6 @@ application
                     return false;
                 }
 
-                if(self.flight.numberOfSeats < self.flight.tourists.length){
-                    //error
-                    self.error = true;
-                    self.errorMessage =
-                        "The 'Number Of Seats'cannot be less than the number of tourists (" +  self.flight.tourists.length + ").";
-                    return false;
-                }
 
                 if(self.flight.numberOfSeats < 1){
                     //error
